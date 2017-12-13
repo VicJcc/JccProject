@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SoundRecognize</string>
+    <string name="test_sound">Test Sound</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/tv_test_sound"
+        android:layout_height="48dp"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="@string/test_sound"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:background="@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/tv_path"
+        android:layout_height="48dp"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/tv_test_sound"
+        android:gravity="center"
+        android:singleLine="true"/>
+
+    <TextView
+        android:id="@+id/tv_translate"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/tv_path"
+        android:gravity="center"
+        android:padding="16dp"/>
+
+</RelativeLayout>
