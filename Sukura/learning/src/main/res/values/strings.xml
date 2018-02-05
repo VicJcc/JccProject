@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">learning</string>
+    <string name="btn_send">发送</string>
 </resources>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+    android:id="@+id/rl_root">
+
+    <TextView
+        android:id="@+id/tv_start"
+        android:text="@string/app_name"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:layout_width="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_test"
+        android:text="Test"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:layout_width="wrap_content"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:background="@mipmap/ic_launcher"
+        android:layout_below="@+id/tv_start"/>
+
+    <ImageView
+        android:id="@+id/iv_chat"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:clickable="true"
+        android:padding="5dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_launcher_background"
+        />
+    <!--聊天输入框-->
+    <example.com.learning.TLChatView
+        android:id="@+id/chat_view"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="3dp"
+        android:visibility="gone"
+        />
+
+    <EditText
+        android:id="@+id/edt_test"
+        android:layout_height="48dp"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

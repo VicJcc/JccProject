@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="48dp">
+
+    <LinearLayout
+
+        android:id="@+id/ll_input_mode"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:baselineAligned="false"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:background="#30000000"
+        >
+
+        <ImageView
+            android:id="@+id/iv_change_mode"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_launcher_background"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/edt_input"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:gravity="center_vertical|left"
+                android:maxLength="40"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="#ffffff"
+                android:textSize="14sp"
+                android:textDirection="ltr"/>
+            <View
+                android:id="@+id/v_edt_line"
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="8dp"
+                android:background="#ffffff"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_send_voice"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                >
+
+                <TextView
+                    android:id="@+id/tv_sound"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_launcher_background"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <ProgressBar
+                    android:id="@+id/pb_send"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_send"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/ic_launcher"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            />
+
+    </LinearLayout>
+</FrameLayout>

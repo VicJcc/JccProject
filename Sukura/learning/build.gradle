@@ -22,9 +22,18 @@ android {
 
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
 
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile(name: 'player-release', ext: 'aar')
+    compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.android.support:appcompat-v7:27.0.2'
+    compile "com.android.support:recyclerview-v7:27.0.2"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile project(':common')
 }
