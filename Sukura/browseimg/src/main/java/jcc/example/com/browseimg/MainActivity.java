@@ -1,6 +1,7 @@
 package jcc.example.com.browseimg;
 
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,14 +13,22 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.jcc.common.JConfig;
+import com.jcc.common.util.JMatrixUtil;
+
+import java.util.ArrayList;
+
+import jcc.example.com.browseimg.beans.JPhotosInfos;
+
 public class MainActivity extends AppCompatActivity implements JAdapter.AdapterCallback{
 
-    private ImageView imageView;
-    private ImageView imageView1;
+    private ImageView mIvTest;
+    private ImageView mIvTest1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        JConfig.getInstence().setContext(this);
         Log.i("MainActivity", "onCreate");
         setContentView(R.layout.activity_main);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -35,27 +44,19 @@ public class MainActivity extends AppCompatActivity implements JAdapter.AdapterC
         recyclerView.setAdapter(new JAdapter(this, this));
 
 
-        imageView = findViewById(R.id.iv_beauty);
-        imageView1 = findViewById(R.id.iv_beauty_1);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        mIvTest = findViewById(R.id.iv_beauty);
+        mIvTest1 = findViewById(R.id.iv_beauty_1);
+        mIvTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int[] location = new int[2];
-                imageView.getLocationOnScreen(location);
-                JMovePicActivity.start(MainActivity.this,
-                        imageView.getWidth(), imageView.getHeight(),
-                        location[0], location[1]);
+                startBrowse(0);
             }
         });
 
-        imageView1.setOnClickListener(new View.OnClickListener() {
+        mIvTest1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int[] location = new int[2];
-                imageView.getLocationOnScreen(location);
-                JMovePicActivity.start(MainActivity.this,
-                        imageView.getWidth(), imageView.getHeight(),
-                        location[0], location[1]);
+                startBrowse(1);
             }
         });
     }
@@ -112,6 +113,31 @@ public class MainActivity extends AppCompatActivity implements JAdapter.AdapterC
 
     @Override
     public void onItemClick(float pressX, float pressY) {
-        JMovePicActivity.start(this, pressX, pressY);
+//        JMovePicActivity.start(this, pressX, pressY);
     }
+
+
+    private ArrayList<Rect> getPicRects(){
+        ArrayList<Rect> rects = new ArrayList<>();
+        Rect rect0 = JMatrixUtil.getDrawableBoundsInView(mIvTest);
+        Rect rect1 = JMatrixUtil.getDrawableBoundsInView(mIvTest1);
+        rects.add(rect0);
+        rects.add(rect1);
+        return rects;
+    }
+
+    private void startBrowse(int position){
+        ArrayList<JPhotosInfos> infos = new ArrayList<>();
+        ArrayList<Rect> rects = getPicRects();
+        for (int i = 0; i < rects.size(); i++) {
+            JPhotosInfos photosInfos = new JPhotosInfos();
+            infos.add(photosInfos.build(rects.get(i)));
+        }
+
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.add(R.drawable.test);
+        arrayList.add(R.drawable.long_test);
+        JMovePicActivity.start(MainActivity.this, arrayList, position, infos);
+    }
+
 }

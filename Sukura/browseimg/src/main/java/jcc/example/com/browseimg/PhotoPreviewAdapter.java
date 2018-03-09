@@ -6,14 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.jcc.common.util.JImageShowUtil;
 import com.jcc.common.weight.viewPics.PhotoInfo;
 import com.jcc.common.weight.viewPics.ViewHolderRecyclingPagerAdapter;
+import com.jcc.common.weight.viewPics.zoonview.PhotoView;
 import com.jcc.common.weight.viewPics.zoonview.PhotoViewAttacher;
 
 import java.util.List;
-
-import jcc.example.com.browseimg.R;
-import com.jcc.common.weight.viewPics.zoonview.PhotoView;
 
 
 /**
@@ -46,23 +45,17 @@ public class PhotoPreviewAdapter extends ViewHolderRecyclingPagerAdapter<PhotoPr
 //            path = photoInfo.getPhotoPath();
 //        }
         String path = photoInfo.getPhotoPath();
-//        if(path.startsWith("http")) {
-//            TLImageShowUtil.displayImage(TLUrlManager.getSmallestImgUrl(path), holder.mIvSmall, true);
-//            TLImageShowUtil.displayImage(path, holder.mImageView, new RequestListener<Drawable>() {
-//                @Override
-//                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-//                    return false;
-//                }
-//
-//                @Override
-//                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-//                    holder.mIvSmall.setVisibility(View.GONE);
-//                    return false;
-//                }
-//            });
-//        }else{
-//            TLImageShowUtil.displayImage(path, holder.mImageView, true);
-//        }
+        if(path.startsWith("http")) {
+            JImageShowUtil.displayImageScale(path, "", holder.mImageView, null);
+        }else{
+            int source = 0;
+            try{
+                source = Integer.valueOf(path);
+                JImageShowUtil.displayImageScale(source, "", holder.mImageView, null);
+            }catch (NumberFormatException e){
+                JImageShowUtil.displayImage(path, holder.mImageView, true);
+            }
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,40 +63,19 @@ public class PhotoPreviewAdapter extends ViewHolderRecyclingPagerAdapter<PhotoPr
                 mCallback.onPhotoClick();
             }
         });
-//        holder.mImageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
-//            @Override
-//            public void onPhotoTap(View view, float x, float y) {
-//                if(mCallback != null){
-//                    mCallback.onPhotoClick();
-//                }
-//            }
-//        });
-
-        holder.mImageView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
+        holder.mImageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
-            public void onViewTap(View view, float x, float y) {
-//                Log.i("PhotoViewTest", x + "    " + y);
+            public void onPhotoTap(View view, float x, float y) {
+                if(mCallback != null){
+                    mCallback.onPhotoClick();
+                }
             }
         });
 
         holder.mImageView.setOnViewDragListener(new PhotoViewAttacher.OnViewDragListener() {
             @Override
             public void onViewDrag(float x, float y) {
-
-                Log.i("PhotoViewTest", "onViewDrag   "
-                        + holder.mImageView.getScale()  + "  "
-                        + holder.mImageView.isScaling());
-
-                Log.i("PhotoViewTest", "dddd   "
-                        + x  + "  "
-                        + y);
-
-                if(holder.mImageView.getScale() == 1.0000f && !holder.mImageView.isScaling()){
-                    Log.i("PhotoViewTest", "Begin scale");
-                    holder.mImageView.onMove(x, y);
-                }else {
-                    holder.mImageView.onMove(0, 0);
-                }
+                Log.i("JccTest", x + "  " + y);
             }
         });
     }

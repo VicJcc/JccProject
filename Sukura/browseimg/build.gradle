@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "26.0.2"
 
 
     defaultConfig {
         applicationId "jcc.example.com.browseimg"
         minSdkVersion 18
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
@@ -25,11 +25,13 @@ android {
 
 }
 
+def supportVersion = rootProject.ext.support
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile "com.android.support:design:$supportVersion"
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:recyclerview-v7:$supportVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:26.1.0'
-    compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.1', {

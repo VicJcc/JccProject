@@ -42,7 +42,7 @@
         android:layout_marginLeft="200dp"
         android:layout_marginTop="100px"
         android:adjustViewBounds="true"
-        android:src="@drawable/test"/>
+        android:src="@drawable/long_test"/>
 
 
     <com.jcc.common.weight.viewPics.GFImageView

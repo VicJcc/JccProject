@@ -27,8 +27,16 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext{
-    buildToolsVersion = "27.0.0"
+    buildToolsVersion = "26.0.2"
     compileSdkVersion = 26
     minSdkVersion = 18
-    targetSdkVersion = 26
+    targetSdkVersion = 27
+
+    support = '27.1.0'
+    junitVersion = "4.12"
+    mockitoVersion = "2.8.47"
+    runnerVersion = "1.0.0"
+    rulesVersion = "1.0.0"
+    espressoVersion = "3.0.0"
+
 }

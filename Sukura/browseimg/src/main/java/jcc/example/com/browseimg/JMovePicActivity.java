@@ -1,19 +1,29 @@
 package jcc.example.com.browseimg;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
+import com.jcc.common.util.JStringUtils;
+import com.jcc.common.util.JWindowUtil;
 import com.jcc.common.weight.viewPics.GFViewPager;
 import com.jcc.common.weight.viewPics.PhotoInfo;
 
 import java.util.ArrayList;
+
+import jcc.example.com.browseimg.beans.JPhotosInfos;
 
 
 /**
@@ -27,80 +37,77 @@ public class JMovePicActivity extends Activity implements
 
     private static final String TAG = "JMovePicActivity";
 
-    public static final String PARAMS_PRESS_X = "press_x";
-    public static final String PARAMS_PRESS_Y = "press_y";
-
-    public static final String PARAMS_HEIGHT = "height";
-    public static final String PARAMS_WIDTH = "width";
-    public static final String PARAMS_LOCATION_X = "location_x";
-    public static final String PARAMS_LOCATION_Y = "location_y";
-
-    public static void start(Context context, float x, float y){
+    public static final String PARAMS_IMGS = "imgs";
+    public static final String PARAMS_INDEX = "index";
+    public static final String PARAMS_LOCAL = "local";
+    public static final String PARAMS_IMGS_INFO = "imgs_info";
+    public static void start(Context context, ArrayList imgs, int position, ArrayList<JPhotosInfos> infos){
         Intent intent = new Intent(context, JMovePicActivity.class);
-        intent.putExtra(PARAMS_PRESS_X, x);
-        intent.putExtra(PARAMS_PRESS_Y, y);
+        intent.putExtra(PARAMS_IMGS, imgs);
+        intent.putExtra(PARAMS_INDEX, position);
+        intent.putExtra(PARAMS_LOCAL, false);
+        intent.putExtra(PARAMS_IMGS_INFO, infos);
         context.startActivity(intent);
+        ((Activity)context).overridePendingTransition(0, 0);
     }
 
-    public static void start(Context context, int width, int height, int locationX, int locationY){
+    public static void start(Context context, ArrayList<String> imgs, int position, boolean local){
         Intent intent = new Intent(context, JMovePicActivity.class);
-        intent.putExtra(PARAMS_HEIGHT, height);
-        intent.putExtra(PARAMS_WIDTH, width);
-        intent.putExtra(PARAMS_LOCATION_X, locationX);
-        intent.putExtra(PARAMS_LOCATION_Y, locationY);
+        intent.putExtra(PARAMS_IMGS, imgs);
+        intent.putExtra(PARAMS_INDEX, position);
+        intent.putExtra(PARAMS_LOCAL, local);
         context.startActivity(intent);
+        ((Activity)context).overridePendingTransition(0, 0);
     }
 
     private RelativeLayout mRlRoot;
-    private JWatchPicView mPicView;
     private GFViewPager mGFViewPager;
 
-    private float mStartX;
-    private float mStartY;
-
-    private int mImgHeight;
-    private int mImgWidth;
-    private int mLocationX;
-    private int mLocationY;
-
     private boolean bFirstResume = true;
+
+    private ArrayList<JPhotosInfos> mInfos; // 各个图片位置
+    private PhotoPreviewAdapter mAdapter;
+    private ArrayList mImgs;
+    private int mCurrentIndex; //
+    private float mWindowScale;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_move_pic);
 
-        mStartX = getIntent().getFloatExtra(PARAMS_PRESS_X, 0f);
-        mStartY = getIntent().getFloatExtra(PARAMS_PRESS_Y, 0f);
+        initData();
+        initView();
+    }
 
-        mImgHeight = getIntent().getIntExtra(PARAMS_HEIGHT, 0);
-        mImgWidth = getIntent().getIntExtra(PARAMS_WIDTH, 0);
-        mLocationX = getIntent().getIntExtra(PARAMS_LOCATION_X, 0);
-        mLocationY = getIntent().getIntExtra(PARAMS_LOCATION_Y, 0);
-
-        mPicView = findViewById(R.id.iv_test);
-        mGFViewPager = findViewById(R.id.vp_data);
-        mRlRoot = findViewById(R.id.rl_root);
-
-        mPicView.setCallback(new JWatchPicView.WatchCallback() {
-            @Override
-            public void needDismiss() {
-                finish();
-                overridePendingTransition(0, 0);
-            }
-        });
-
+    private void initData(){
+        mInfos = (ArrayList<JPhotosInfos>) getIntent().getSerializableExtra(PARAMS_IMGS_INFO);
+        mImgs = (ArrayList) getIntent().getSerializableExtra(PARAMS_IMGS);
+        mCurrentIndex = getIntent().getIntExtra(PARAMS_INDEX, 0);
 
         ArrayList<PhotoInfo> mPhotoList = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            PhotoInfo info = new PhotoInfo();
-            mPhotoList.add(info);
+//        mAdapter = new TLShowImgAdapter(mViews);
+        if(mImgs != null){
+            for (int i = 0; i < mImgs.size(); i++) {
+//                TLShowImageView view = new TLShowImageView(this);
+//                view.setImg(mImgs.get(i));
+//                mViews.add(view);
+                PhotoInfo info = new PhotoInfo();
+                info.setPhotoPath(mImgs.get(i)+"");
+                mPhotoList.add(info);
+            }
         }
-        PhotoPreviewAdapter mAdapter = new PhotoPreviewAdapter(this, mPhotoList, this);
-        mGFViewPager.setAdapter(mAdapter);
-        mGFViewPager.setCurrentItem(0);
-        mGFViewPager.addOnPageChangeListener(this);
+        mAdapter = new PhotoPreviewAdapter(this, mPhotoList, this);
+        mWindowScale = JWindowUtil.getWindowScale(this);
+    }
 
+    private void initView(){
+        mGFViewPager = findViewById(R.id.vp_pager);
+        mRlRoot = findViewById(R.id.rl_root);
+
+        mGFViewPager.setAdapter(mAdapter);
+        mGFViewPager.setCurrentItem(mCurrentIndex);
+        mGFViewPager.addOnPageChangeListener(this);
     }
 
     @Override
@@ -110,21 +117,11 @@ public class JMovePicActivity extends Activity implements
             startAnim();
             bFirstResume = false;
         }
-
-
-//        mRlRoot.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-//                | View.SYSTEM_UI_FLAG_FULLSCREEN
-//                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-
         hideBar();
-
     }
 
     private void startAnim(){
-//        mPicView.setVisibility(View.VISIBLE);
-        mPicView.startImgAnim(mImgHeight, mImgWidth, mLocationX, mLocationY);
+        startImgAnim();
     }
 
     private void hideBar(){
@@ -149,7 +146,7 @@ public class JMovePicActivity extends Activity implements
 
     @Override
     public void onBackPressed() {
-        mPicView.startEndAnim();
+//        mPicView.startEndAnim();
     }
 
     @Override
@@ -159,7 +156,7 @@ public class JMovePicActivity extends Activity implements
 
     @Override
     public void onPageSelected(int position) {
-
+        mCurrentIndex = position;
     }
 
     @Override
@@ -169,6 +166,149 @@ public class JMovePicActivity extends Activity implements
 
     @Override
     public void onPhotoClick() {
+        startExitAnim();
+    }
+
+    public void startExitAnim(){
+        mRlRoot.setBackgroundColor(Color.parseColor(JStringUtils.getBlackAlphaBg(0)));
+
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(mGFViewPager, View.SCALE_X,
+                1,
+                getCurrentPicOriginalScale());
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(mGFViewPager, View.SCALE_Y,
+                1,
+                getCurrentPicOriginalScale());
+
+        ObjectAnimator animatorTransX = ObjectAnimator.ofFloat(mGFViewPager, View.TRANSLATION_X,
+                0f,
+                0f);
+        ObjectAnimator animatorTransY = ObjectAnimator.ofFloat(mGFViewPager, View.TRANSLATION_Y,
+                0f,
+                0f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(animatorX, animatorY, animatorTransX, animatorTransY);
+        set.setDuration(500);
+        set.start();
+
+        set.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+//                if(mCallback != null){
+//                    mCallback.needDismiss();
+//                }
+                finish();
+                overridePendingTransition(0, 0);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+    }
+
+    private float getCurrentPicOriginalScale(){
+
+        float mScale;
+
+        float pivotX;
+        float pivotY;
+        float animImgStartHeight;
+        float animImgStartWidth;
+        int width = mInfos.get(mCurrentIndex).getWidth();
+        int height = mInfos.get(mCurrentIndex).getHeight();
+        int localX = mInfos.get(mCurrentIndex).getLeft();
+        int localY = mInfos.get(mCurrentIndex).getTop();
+
+        float imgScale = getImgScale(width, height);
+
+        if(imgScale >= mWindowScale){
+            mScale = width * 1.0f / JWindowUtil.getWindowWidth(this);
+            animImgStartHeight = JWindowUtil.getWindowHeight(this) * mScale;
+            pivotX = localX / (1 - mScale);
+            pivotY = (localY - (animImgStartHeight - height) / 2) / (1 - mScale);
+        }else{
+            mScale = height * 1.0f / JWindowUtil.getWindowHeight(this);
+            animImgStartWidth = JWindowUtil.getWindowWidth(this) * mScale;
+            pivotX = (localX - (animImgStartWidth - width) / 2) / (1 - mScale);
+            pivotY = localY / (1 - mScale);
+        }
+        mGFViewPager.setPivotX(pivotX);
+        mGFViewPager.setPivotY(pivotY);
+        return mScale;
+    }
+
+    private float getImgScale(float width, float height){
+        return width * 1.0f / height;
+    }
+
+    public void startImgAnim(){
+
+        float mScale;
+
+        float pivotX;
+        float pivotY;
+        float animImgStartHeight;
+        float animImgStartWidth;
+        int width = mInfos.get(mCurrentIndex).getWidth();
+        int height = mInfos.get(mCurrentIndex).getHeight();
+        int localX = mInfos.get(mCurrentIndex).getLeft();
+        int localY = mInfos.get(mCurrentIndex).getTop();
+
+        float windowScale = JWindowUtil.getWindowScale(this);
+        float imgScale = getImgScale(width, height);
+
+        if(imgScale >= windowScale){
+            mScale = width * 1.0f / JWindowUtil.getWindowWidth(this);
+            animImgStartHeight = JWindowUtil.getWindowHeight(this) * mScale;
+            pivotX = localX / (1 - mScale);
+            pivotY = (localY - (animImgStartHeight - height) / 2) / (1 - mScale);
+        }else{
+            mScale = height * 1.0f / JWindowUtil.getWindowHeight(this);
+            animImgStartWidth = JWindowUtil.getWindowWidth(this) * mScale;
+            pivotX = (localX - (animImgStartWidth - width) / 2) / (1 - mScale);
+            pivotY = localY / (1 - mScale);
+        }
+
+        mGFViewPager.setPivotX(pivotX);
+        mGFViewPager.setPivotY(pivotY);
+
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(mGFViewPager, View.SCALE_X,
+                mScale,
+                1.0f);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(mGFViewPager, View.SCALE_Y,
+                mScale,
+                1.0f);
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(animatorX, animatorY);
+        set.setDuration(500);
+        set.start();
+
+//        AlphaAnimation alphaAnimation = new AlphaAnimation(mScale, 1f);
+        ValueAnimator valueAnimator = new ValueAnimator();
+        valueAnimator.setDuration(500);
+        valueAnimator.setFloatValues(mScale, 1f);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                Log.i("ValueAnimator", (float)animation.getAnimatedValue() + "");
+                mRlRoot.setBackgroundColor(Color.parseColor(JStringUtils.getBlackAlphaBg((float)animation.getAnimatedValue())));
+            }
+        });
+        valueAnimator.start();
+//        alphaAnimation.setDuration(300);
+//        mRlRoot.startAnimation(alphaAnimation);
 
     }
 }
