@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet
+    android:duration="800"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<!--<slide android:slideEdge="top">-->
+    <!--<targets >-->
+        <!--<target  android:targetId="@id/rl_root"></target>-->
+    <!--</targets>-->
+<!--</slide>-->
+</transitionSet>
+
+
+

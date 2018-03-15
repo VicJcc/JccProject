@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="false"
+                android:background="#000000"
+                android:id="@+id/rl_root">
+
+    <com.jcc.common.weight.viewPics.GFViewPager
+        android:id="@+id/vp_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#123456"
+        android:visibility="gone"/>
+
+
+    <ImageView
+        android:id="@+id/iv_sf"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:transitionName="@string/trans_name"
+        android:background="#654321"
+        android:src="@drawable/sf"/>
+
+</RelativeLayout>

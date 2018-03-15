@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">keepalive</string>
+
+    <string name="account_auth_type">jcc.example.com.keepalive.type</string>
+    <string name="account_auth_provide">jcc.example.com.keepalive.provider</string>
+
+</resources>

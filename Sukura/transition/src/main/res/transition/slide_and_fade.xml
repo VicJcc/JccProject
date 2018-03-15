@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+
+    >
+
+ <fade android:duration="5000">
+    <targets>
+        <target android:targetId="@android:id/statusBarBackground"></target>
+    </targets>
+ </fade>
+
+  <slide android:startDelay="6000">
+      <targets >
+          <target android:targetId="@id/iv_sf"></target>
+      </targets>
+  </slide>
+
+</transitionSet>
