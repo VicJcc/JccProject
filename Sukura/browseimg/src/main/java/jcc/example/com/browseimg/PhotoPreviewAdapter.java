@@ -75,7 +75,19 @@ public class PhotoPreviewAdapter extends ViewHolderRecyclingPagerAdapter<PhotoPr
         holder.mImageView.setOnViewDragListener(new PhotoViewAttacher.OnViewDragListener() {
             @Override
             public void onViewDrag(float x, float y) {
-                Log.i("JccTest", x + "  " + y);
+                Log.i("JccTest", x + " " + y + "  " + holder.mImageView.getScale());
+                if(null != mCallback
+                        &&holder.mImageView.getScale() <= 1.01f){
+                    mCallback.onDrag(x, y);
+                }
+            }
+
+            @Override
+            public void onDragFinish() {
+                Log.i("JccTest", "onDragFinish");
+                if(null != mCallback){
+                    mCallback.onDragFinish();
+                }
             }
         });
     }
@@ -92,5 +104,7 @@ public class PhotoPreviewAdapter extends ViewHolderRecyclingPagerAdapter<PhotoPr
 
     public interface PhotoCallback{
         void onPhotoClick();
+        void onDrag(float x, float y);
+        void onDragFinish();
     }
 }

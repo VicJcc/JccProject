@@ -77,6 +77,11 @@ public class PhotoPreviewAdapter extends ViewHolderRecyclingPagerAdapter<PhotoPr
             public void onViewDrag(float x, float y) {
                 Log.i("JccTest", x + "  " + y);
             }
+
+            @Override
+            public void onDragFinish() {
+
+            }
         });
     }
 

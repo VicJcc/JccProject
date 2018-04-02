@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jcc.example.com.motionevent.MainActivity">
+
+
+    <jcc.example.com.motionevent.JTestViewGroup
+        android:id="@+id/jv_view_group"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
+
+        <jcc.example.com.motionevent.JTestView
+            android:id="@+id/v_jtest1"
+            android:layout_height="70dp"
+            android:layout_width="70dp"
+            android:background="@color/colorAccent"/>
+        <!--<jcc.example.com.motionevent.JTestView-->
+            <!--android:id="@+id/v_jtest2"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:background="@color/colorAccent"/><jcc.example.com.motionevent.JTestView-->
+            <!--android:id="@+id/v_jtest3"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:background="@color/colorAccent"/><jcc.example.com.motionevent.JTestView-->
+            <!--android:id="@+id/v_jtest4"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:background="@color/colorAccent"/><jcc.example.com.motionevent.JTestView-->
+            <!--android:id="@+id/v_jtest5"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:background="@color/colorAccent"/><jcc.example.com.motionevent.JTestView-->
+            <!--android:id="@+id/v_jtest6"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:background="@color/colorAccent"/><jcc.example.com.motionevent.JTestView-->
+            <!--android:id="@+id/v_jtest7"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:background="@color/colorAccent"/>-->
+
+    </jcc.example.com.motionevent.JTestViewGroup>
+
+
+</RelativeLayout>

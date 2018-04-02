@@ -28,6 +28,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <!--<View-->
+        <!--android:layout_height="100dp"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:background="@color/colorAccent"-->
+        <!--android:gravity="center"/>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/tv_move"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:layout_width="96dp"-->
+        <!--android:background="@color/colorPrimary"-->
+        <!--android:textColor="#ffffff"-->
+        <!--android:text="Move"-->
+        <!--android:gravity="center"/>-->
+
 
 
 </RelativeLayout>

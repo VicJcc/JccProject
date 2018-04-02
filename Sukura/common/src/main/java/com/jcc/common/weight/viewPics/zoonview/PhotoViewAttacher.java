@@ -514,9 +514,9 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
                         }
                     }
 
-//                    if(null != mViewDragListener){
-//                        mViewDragListener.onViewDrag(ev.getRawX(), ev.getRawY());
-//                    }
+                    if(null != mViewDragListener){
+                        mViewDragListener.onDragFinish();
+                    }
 
                     break;
             }
@@ -1041,6 +1041,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
          * @param y    - where the user dragged from the top of the View.
          */
         void onViewDrag(float x, float y);
+
+        void onDragFinish();
     }
 
     private class AnimatedZoomRunnable implements Runnable {

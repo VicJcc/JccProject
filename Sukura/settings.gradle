@@ -1,1 +1,1 @@
-include ':app', ':soundrecognize', ':common', ':learning', ':emoji', ':browseimg', ':keepalive', ':transition'
+include ':app', ':soundrecognize', ':common', ':learning', ':emoji', ':browseimg', ':keepalive', ':transition', ':motionevent'

@@ -101,6 +101,7 @@ public class JMovePicActivity extends Activity implements
         mWindowScale = JWindowUtil.getWindowScale(this);
     }
 
+    private float mScale = 1.0f;
     private void initView(){
         mGFViewPager = findViewById(R.id.vp_pager);
         mRlRoot = findViewById(R.id.rl_root);
@@ -108,6 +109,17 @@ public class JMovePicActivity extends Activity implements
         mGFViewPager.setAdapter(mAdapter);
         mGFViewPager.setCurrentItem(mCurrentIndex);
         mGFViewPager.addOnPageChangeListener(this);
+
+//        findViewById(R.id.tv_move).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mGFViewPager.setPivotX(JWindowUtil.getWindowWidth(JMovePicActivity.this) / 2);
+//                mGFViewPager.setPivotY(JWindowUtil.getWindowHeight(JMovePicActivity.this) / 2);
+//                mGFViewPager.setScaleX(mScale * 0.99f);
+//                mGFViewPager.setScaleY(mScale * 0.99f);
+//                mScale = mScale*0.99f;
+//            }
+//        });
     }
 
     @Override
@@ -169,26 +181,53 @@ public class JMovePicActivity extends Activity implements
         startExitAnim();
     }
 
+    @Override
+    public void onDrag(float x, float y) {
+        Log.i(TAG, "onDrag: ");
+
+        startDrag(x, y);
+
+    }
+
+    @Override
+    public void onDragFinish() {
+        if(mGFViewPager.getScaleX() > 0.7f) {
+            mGFViewPager.setTranslationX(0);
+            mGFViewPager.setTranslationY(0);
+            mGFViewPager.setScaleX(1);
+            mGFViewPager.setScaleY(1);
+            mRlRoot.setBackgroundColor(Color.parseColor(JStringUtils.getBlackAlphaBg(1)));
+        }else{
+            startExitAnim();
+        }
+    }
+
     public void startExitAnim(){
         mRlRoot.setBackgroundColor(Color.parseColor(JStringUtils.getBlackAlphaBg(0)));
 
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(mGFViewPager, View.SCALE_X,
-                1,
+                mGFViewPager.getScaleX(),
                 getCurrentPicOriginalScale());
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(mGFViewPager, View.SCALE_Y,
-                1,
+                mGFViewPager.getScaleY(),
                 getCurrentPicOriginalScale());
-
+        getCurrentPicOriginalScale();
         ObjectAnimator animatorTransX = ObjectAnimator.ofFloat(mGFViewPager, View.TRANSLATION_X,
-                0f,
-                0f);
+                mGFViewPager.getTranslationX() +
+                        (JWindowUtil.getWindowWidth(this) / 2 * (1 - mGFViewPager.getScaleX()) -
+                                mGFViewPager.getPivotX() * (1 - mGFViewPager.getScaleX())),
+                0);
         ObjectAnimator animatorTransY = ObjectAnimator.ofFloat(mGFViewPager, View.TRANSLATION_Y,
-                0f,
-                0f);
+                mGFViewPager.getTranslationY() +
+                        (JWindowUtil.getWindowHeight(this) / 2 * (1 - mGFViewPager.getScaleY()) -
+                                mGFViewPager.getPivotY() * (1 - mGFViewPager.getScaleY())),
+                0);
+
+        Log.i("TTTT", mGFViewPager.getTranslationX() + " finish  " + mGFViewPager.getTranslationY());
 
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animatorX, animatorY, animatorTransX, animatorTransY);
-        set.setDuration(500);
+        set.setDuration(5000);
         set.start();
 
         set.addListener(new Animator.AnimatorListener() {
@@ -311,4 +350,22 @@ public class JMovePicActivity extends Activity implements
 //        mRlRoot.startAnimation(alphaAnimation);
 
     }
+
+
+    private void startDrag(float x, float y){
+        mGFViewPager.setTranslationX(x);
+        mGFViewPager.setTranslationY(y);
+        if(y > 0){
+            mGFViewPager.setPivotX(JWindowUtil.getWindowWidth(JMovePicActivity.this) / 2);
+            mGFViewPager.setPivotY(JWindowUtil.getWindowHeight(JMovePicActivity.this) / 2);
+            float scale = Math.abs(y) / JWindowUtil.getWindowHeight(this);
+            if(scale < 1 && scale > 0) {
+                mGFViewPager.setScaleX(1-scale);
+                mGFViewPager.setScaleY(1-scale);
+                mRlRoot.setBackgroundColor(Color.parseColor(JStringUtils.getBlackAlphaBg(1-scale)));
+            }
+        }
+        Log.i("TTTT", x + "   " + y);
+    }
+
 }
