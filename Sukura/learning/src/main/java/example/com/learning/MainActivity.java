@@ -49,6 +49,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getPermission();
 
         Log.i(TAG, "Main " + Thread.currentThread().getName()+ "  " + Thread.currentThread().getId());
+        
+        List<String> srcList = new JTestList<>();
+        for (int i = 0; i < 8; i++) {
+            srcList.add("saf " + i);
+        }
+
+        List<String> dstList = new JTestList<>();
+        for (int i = 0; i < 10; i++) {
+            dstList.add("saf " + i);
+        }
+        dstList.addAll(srcList);
     }
 
     @Override
@@ -264,4 +275,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return true;
     }
+
 }

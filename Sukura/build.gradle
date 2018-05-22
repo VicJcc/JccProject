@@ -6,7 +6,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3' //点击直接运行 3.0.1会把\app\build\intermediates\manifests\full\debug\AndroidManifest.xml 里加上testOnly=true
+        classpath 'com.android.tools.build:gradle:3.1.2' //点击直接运行 3.0.1会把\app\build\intermediates\manifests\full\debug\AndroidManifest.xml 里加上testOnly=true
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -29,7 +29,7 @@ task clean(type: Delete) {
 ext{
     buildToolsVersion = "26.0.2"
     compileSdkVersion = 26
-    minSdkVersion = 18
+    minSdkVersion = 24
     targetSdkVersion = 27
 
     support = '27.1.0'

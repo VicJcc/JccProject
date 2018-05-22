@@ -211,7 +211,6 @@ public class JMovePicActivity extends Activity implements
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(mGFViewPager, View.SCALE_Y,
                 mGFViewPager.getScaleY(),
                 getCurrentPicOriginalScale());
-        getCurrentPicOriginalScale();
         ObjectAnimator animatorTransX = ObjectAnimator.ofFloat(mGFViewPager, View.TRANSLATION_X,
                 mGFViewPager.getTranslationX() +
                         (JWindowUtil.getWindowWidth(this) / 2 * (1 - mGFViewPager.getScaleX()) -
